@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingHorizontal: 16,
         paddingVertical: 8,
-        borderRadius: 20,
+        borderRadius: 100,
         marginRight: 8,
         backgroundColor: '#F1FAFF',
     },
@@ -513,6 +513,7 @@ const styles = StyleSheet.create({
     },
     personButtonText: {
         fontSize: 16,
+        alignItems: 'center',
         color: '#3F4254',
     },
     personButtonTextActive: {
@@ -531,19 +532,22 @@ const styles = StyleSheet.create({
         // marginHorizontal: 16,
     },
     paymentButton: {
-        // paddingHorizontal: 24,
-        // paddingVertical: 12,
-        width: 82,
-        height: 44,
-        borderRadius: 20,
-        marginRight: 12,
+        paddingHorizontal: 21,
+        paddingVertical: 14, 
+        borderRadius: 100,
         backgroundColor: '#F1FAFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 5,
     },
     paymentButtonActive: {
         backgroundColor: '#1E3989',
     },
     paymentButtonText: {
         fontSize: 16,
+        alignItems: 'center',
+        textAlign: 'center',
+        justifyContent: 'center',
         color: '#333',
     },
     paymentButtonTextActive: {
