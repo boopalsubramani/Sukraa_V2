@@ -13,33 +13,28 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../utils/SharedImages';
 import Header from '../components/Common/Header';
+import { FONT_FAMILY } from '../utils/Constants';
 
 
-const { width } = Dimensions.get('window');
+const screenWidth = Dimensions.get('window').width;
+const ITEM_MARGIN = 8;
+const NUM_COLUMNS = 3;
+const ITEM_WIDTH = (screenWidth - ITEM_MARGIN * (NUM_COLUMNS - 10)) / NUM_COLUMNS;
 
 const slides = [
     {
         id: '1',
-        // image: require("../assets/image6.png"),
-        image: "",
         title: 'Schedule Your Health Test Now!',
         subtitle: 'Home sample collection & certified lab results.',
     },
     {
         id: '2',
-        // image: require("../assets/image6.png"),
-        image: "",
         title: 'Special Offers',
         subtitle: 'Get 20% off on all health packages',
     },
 ];
 
 const frequentTests = [
-    // { id: '1', name: 'Fever', image: require("../assets/Thermometer.png"), color: '#FFD596',backgroundColor:"#FFF8DD" },
-    // { id: '2', name: 'Urine Test', image: require("../assets/urine.png"), color: '#9EB5F9',backgroundColor:"#F1FAFF" },
-    // { id: '3', name: 'Pancreatitis', image: require("../assets/Pancreatitis.png"), color: '#87C699',backgroundColor:"#E8FFF3"  },
-    // { id: '4', name: 'Blood sugar', image: require("../assets/blood.png"), color: '#D9524F',backgroundColor:"#FFF5F8"  },
-    // { id: '5', name: 'Thyroid test', image: require("../assets/Thyroidtest.png"), color: '#F89C47',backgroundColor:"#FFF9F4"  },
     { id: '1', name: 'Fever', image: "", color: '#FFD596', backgroundColor: "#FFF8DD" },
     { id: '2', name: 'Urine Test', image: "", color: '#9EB5F9', backgroundColor: "#F1FAFF" },
     { id: '3', name: 'Pancreatitis', image: "", color: '#87C699', backgroundColor: "#E8FFF3" },
@@ -142,7 +137,7 @@ const HomeScreen = () => {
                 )}
 
                 {/* Payment Method */}
-                <View style={styles.paymentSection}>
+                <View>
                     <Text style={styles.sectionTitle}>Payer</Text>
                     <View style={styles.paymentButtons}>
                         {['Cash', 'Insurance'].map(method => (
@@ -167,54 +162,43 @@ const HomeScreen = () => {
 
                 {/* Search */}
                 <View style={styles.searchContainer}>
-                    <Image source={IMAGES.Search} />
-                    {/* <Search size={20} color="#666" /> */}
+                    <Image
+                        source={IMAGES.Search}
+                        style={{ tintColor: '#82869D', resizeMode: 'contain', width: 18, height: 18, marginRight: 8 }}
+                    />
                     <TextInput
                         style={styles.searchInput}
                         placeholder="Search for tests or health packages"
                         placeholderTextColor="#7E8299"
                     />
-                    <Image source={IMAGES.SearchInsta} />
+                    <Image
+                        source={IMAGES.SearchInsta}
+                        style={{ width: 18, height: 18, resizeMode: 'contain', marginLeft: 8 }}
+                    />
                 </View>
 
+
                 {/* Slides */}
-                <FlatList
-                    data={slides}
+                <ScrollView
                     horizontal
-                    pagingEnabled
                     showsHorizontalScrollIndicator={false}
-                    onMomentumScrollEnd={e => {
-                        const newIndex = Math.round(e.nativeEvent.contentOffset.x / width);
-                        setActiveSlide(newIndex);
-                    }
-                    }
-                    renderItem={({ item }) => (
+                >
+                    {slides.map((slide) => (
                         <LinearGradient
-                            key={item.id}
+                            key={slide.id}
                             colors={['#1E3989', '#9B71AA', '#87C699']}
                             start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                            style={styles.slide}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.slideCard}
                         >
-                            <View style={styles.slideRow}>
-                                {/* Left Image */}
-                                {/* <Image source={item.image} style={styles.slideImage} /> */}
-
-                                {/* Right Content */}
-                                <View style={styles.slideContent}>
-                                    <Text numberOfLines={2} ellipsizeMode="tail" style={styles.slideTitle}>{item.title}</Text>
-                                    <Text numberOfLines={2} ellipsizeMode="tail" style={styles.slideSubtitle}>{item.subtitle}</Text>
-                                    <TouchableOpacity style={styles.bookButton}>
-                                        <Text style={styles.bookButtonText}>Book Now</Text>
-                                    </TouchableOpacity>
-                                </View>
+                            <Image source={IMAGES.Doctor} style={styles.slideImage} resizeMode="contain" />
+                            <View style={styles.slideContent}>
+                                <Text style={styles.doctorTitle}>{slide.title}</Text>
+                                <Text style={styles.doctorSubtitle}>{slide.subtitle}</Text>
                             </View>
                         </LinearGradient>
-
-
-                    )}
-                    keyExtractor={item => item.id}
-                />
+                    ))}
+                </ScrollView>
 
                 {/* Pagination */}
                 <View style={styles.pagination}>
@@ -238,33 +222,31 @@ const HomeScreen = () => {
 
                 {/* Frequent Tests */}
                 <Text style={styles.sectionTitle}>Frequent Test</Text>
-
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: ITEM_MARGIN }}>
                     {frequentTests.map(test => (
-                        <TouchableOpacity key={test.id}>
+                        <TouchableOpacity key={test.id} style={{ width: ITEM_WIDTH, marginBottom: ITEM_MARGIN }}>
                             <View style={styles.testItem}>
                                 <View
                                     style={[
                                         styles.testItemInner,
                                         { backgroundColor: test.backgroundColor },
-                                    ]}>
+                                    ]}
+                                >
                                     <View
                                         style={[
                                             styles.iconContainer,
                                             { backgroundColor: test.color },
-                                        ]}>
-                                        {/* <Image
-                      source={test.image}
-                      style={styles.testImage}
-                      resizeMode="contain"
-                    /> */}
+                                        ]}
+                                    >
+                                        <Image source={IMAGES.BloodDrop} style={{ width: 16, height: 16, resizeMode: 'contain' }} />
                                     </View>
-                                    <Text style={styles.testLabel}>{test.name}</Text>
+                                    <Text style={styles.testLabel} >{test.name}</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
                     ))}
                 </View>
+
 
                 {/* Health Packages */}
                 <View style={styles.packageSection}>
@@ -340,154 +322,33 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        paddingHorizontal: 20
-    },
-    header: {
-        // flexDirection: 'row',
-        // justifyContent: 'space-between',
-        // alignItems: 'flex-start',
-        // padding: 10,
-        backgroundColor: '#fff',
-        // paddingTop: Platform.OS === 'web' ? 16 : 48,
-    },
-    locationContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    locationIconWrapper: {
-        width: 32,
-        height: 32,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 4,
-    },
-    locationTextContainer: {
-        flexDirection: 'column',
-    },
-    locationCity: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#00071A',
-        lineHeight: 20,
-    },
-    locationCountry: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#00071A',
-        lineHeight: 20,
-    },
-    headerIcons: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-    iconButton: {
-        padding: 4,
-    },
-    iconCircle: {
-        width: 22,
-        height: 16,
-        borderRadius: 100,
-        backgroundColor: '#EFF2F5',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10
-    },
-    testIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 8,
-    },
-
-    testImage: {
-        width: 24,
-        height: 24,
+        paddingHorizontal: 16
     },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 10,
-        padding: 12,
-        backgroundColor: '#fff',
-        borderRadius: 30,
-        borderWidth: 1,
-        borderColor: "#EFF2F5"
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        borderRadius: 100,
+        marginTop: 20,
+        backgroundColor: '#EFF2F5',
     },
     searchInput: {
         flex: 1,
-        marginLeft: 8,
         fontSize: 16,
-
+        fontWeight: '500',
+        lineHeight: 18
     },
-    slide: {
-        width: width - 68,
-        height: 180,
-        borderRadius: 12,
-        overflow: 'hidden',
-        padding: 8,
-        marginHorizontal: 16,
-        marginVertical: 10,
-    },
-
-    slideRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-
-    slideImage: {
-        width: 150,
-        height: 150,
-        resizeMode: 'cover',
-        // marginRight: 16,
-    },
-
-    slideContent: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-
-    slideTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 4,
-        flexWrap: 'wrap',
-    },
-
-    slideSubtitle: {
-        fontSize: 14,
-        color: '#f0f0f0',
-        marginBottom: 12,
-        flexWrap: 'wrap',
-
-    },
-
-    bookButton: {
-        backgroundColor: '#fff',
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderRadius: 20,
-        alignSelf: 'flex-start',
-    },
-
-    bookButtonText: {
-        color: '#1E3989',
-        fontWeight: 'bold',
-    }
-    ,
     pagination: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 16,
+        marginTop: 12,
     },
     paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#ccc',
+        width: 10,
+        height: 10,
+        resizeMode: 'contain',
+        borderRadius: 5,
         marginHorizontal: 4,
     },
     paginationDotActive: {
@@ -502,11 +363,13 @@ const styles = StyleSheet.create({
     },
     personButton: {
         flexDirection: "row",
-        paddingHorizontal: 16,
-        paddingVertical: 8,
         borderRadius: 100,
-        marginRight: 8,
-        backgroundColor: '#F1FAFF',
+        backgroundColor: '#f0f0f0',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginHorizontal: 5,
     },
     personButtonActive: {
         backgroundColor: '#1E3989',
@@ -524,16 +387,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#1E3989"
     },
-    paymentSection: {
-        // marginTop: 14,
-    },
     paymentButtons: {
         flexDirection: 'row',
-        // marginHorizontal: 16,
     },
     paymentButton: {
         paddingHorizontal: 21,
-        paddingVertical: 14, 
+        paddingVertical: 14,
         borderRadius: 100,
         backgroundColor: '#F1FAFF',
         justifyContent: 'center',
@@ -553,49 +412,31 @@ const styles = StyleSheet.create({
     paymentButtonTextActive: {
         color: '#fff',
     },
-    frequentTests: {
-        paddingHorizontal: 16,
-        flexWrap: "wrap-reverse",
-    },
     testItem: {
-        marginRight: 10,
-        marginVertical: 5,
         flexDirection: "row",
     },
     testItemInner: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'white',
-        paddingVertical: 5,
-        paddingHorizontal: 8,
-        borderRadius: 30,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        borderRadius: 100,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        // shadowOpacity: 0.1,
-        shadowRadius: 2,
         elevation: 2,
     },
     iconContainer: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: 24,
+        height: 24,
+        resizeMode: 'contain',
+        borderRadius: 100,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 8,
     },
     testLabel: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333',
         fontWeight: '500',
-    },
-
-    testIcon: {
-        width: 56,
-        height: 56,
-        borderRadius: 28,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 8,
     },
     testName: {
         fontSize: 14,
@@ -617,12 +458,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     packageCard: {
-        width: width - 100,
-        marginHorizontal: 8,
-        padding: 16,
+        flex:1,
+        width: screenWidth * 0.90,
+        paddingHorizontal:16,
+        paddingVertical:8,
+        marginTop: 20,
+        flexDirection: 'row',
+        borderRadius: 8,
+        marginRight: 16,
         backgroundColor: '#C8DFFF',
-        borderRadius: 12,
-        marginBottom: 16,
     },
     recommendedBadge: {
         position: "absolute",
@@ -632,34 +476,9 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
         alignSelf: 'flex-start',
-        // marginBottom: 12,
-
-    },
-    recommendedText: {
-        fontSize: 11,
-        fontWeight: '600',
-        textAlign: "center"
-    },
-
-    // PackageScreen
-    recommendedText: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#333',
-        marginBottom: 16,
-    },
-    card: {
-        backgroundColor: 'white',
-        borderRadius: 12,
-        padding: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 3,
     },
     contentContainer: {
-        gap: 12,
+        // gap: 12,
     },
     title: {
         fontSize: 16,
@@ -703,23 +522,56 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     price: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#333',
+        fontSize: 17,
+        fontWeight: '700',
+        color: '#000000',
+        fontFamily:FONT_FAMILY.fontFamilyAnekLatinSemiBold
     },
     originalPrice: {
-        fontSize: 13,
-        color: '#666',
+        fontSize: 16,
+        color: '#000000',
         textDecorationLine: 'line-through',
+        fontFamily:FONT_FAMILY.fontFamilyAnekLatinMedium
     },
     addButton: {
-        borderRadius: 30,
-        padding: 14,
+        borderRadius: 100,
+        width:96,
+        height:37,
         alignItems: 'center',
+        justifyContent:'center'
     },
     buttonText: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: '600',
+    },
+    slideCard: {
+        marginTop: 20,
+        flexDirection: 'row',
+        borderRadius: 12,
+        marginRight: 16,
+        alignItems: 'center',
+        maxWidth: screenWidth * 0.9,
+        minWidth: 280,
+    },
+    slideImage: {
+        width: 100,
+        height: 120,
+    },
+    slideContent: {
+        flex: 1,
+        flexShrink: 1,
+    },
+    doctorTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#fff',
+        flexWrap: 'wrap',
+    },
+    doctorSubtitle: {
+        fontSize: 14,
+        color: '#fff',
+        marginTop: 4,
+        flexWrap: 'wrap',
     },
 });

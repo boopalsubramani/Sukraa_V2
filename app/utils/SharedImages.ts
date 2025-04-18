@@ -9,7 +9,6 @@ export const IMAGES = {
     Lock: require('../assets/images/lock.png'),
     DownArrow: require('../assets/images/downArrow.png'),
     LeftArrow: require('../assets/images/leftArrow.png'),
-    BloodDrop: require('../assets/images/bloodDrop.png'),
     BottomHome: require('../assets/images/bottomHome.png'),
     BottomProfile: require('../assets/images/bottomProfile.png'),
     BottomCalender: require('../assets/images/bottomCalender.png'),
@@ -18,8 +17,15 @@ export const IMAGES = {
     Location: require('../assets/images/location.png'),
     Notification: require('../assets/images/notification.png'),
     SosAlert: require('../assets/images/sosAlert.png'),
-    Add:require('../assets/images/add.png'),
-    Search:require('../assets/images/search.png'),
-    SearchInsta:require('../assets/images/searchInsta.png')
+    Add: require('../assets/images/add.png'),
+    Search: require('../assets/images/search.png'),
+    SearchInsta: require('../assets/images/searchInsta.png'),
+    Doctor: require('../assets/images/doctor.png'),
+    Pancreatitis: require('../assets/images/pancreatitis.png'),
+    Fever: require('../assets/images/fever.png'),
+    BloodDrop: require('../assets/images/bloodDrop.png'),
+    Thyroid: require('../assets/images/thyroid.png'),
+    Urine: require('../assets/images/urine.png')
+
 
 }
