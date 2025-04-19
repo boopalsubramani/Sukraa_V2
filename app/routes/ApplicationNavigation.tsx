@@ -6,6 +6,7 @@ import SignupScreen from '../screen/SignUpScreen';
 import OTPVerification from '../screen/OtpVerification';
 import CreatePasswordScreen from '../screen/CreatePasswordScreen';
 import BottomNavigation from './BottomNavigation';
+import BookingTest from '../screen/BookingTest';
 
 
 const stack = createStackNavigator();
@@ -18,6 +19,7 @@ const ApplicationNavigation = () => {
                 <stack.Screen name="SignUp" component={SignupScreen} />
                 <stack.Screen name="OtpVerification" component={OTPVerification} />
                 <stack.Screen name="CreatePassword" component={CreatePasswordScreen} />
+                <stack.Screen name="BookingTest" component={BookingTest} />
                 <stack.Screen name="Bottom" component={BottomNavigation} />
             </stack.Navigator>
         </NavigationContainer>

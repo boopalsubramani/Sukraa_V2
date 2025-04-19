@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: screenWidth * 0.05,
     paddingTop: screenHeight * 0.05,
+
   },
   title: {
     fontSize: 24,
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
   },
   inputContainer: {
+   alignItems:"center",
     marginBottom: 20,
   },
 });

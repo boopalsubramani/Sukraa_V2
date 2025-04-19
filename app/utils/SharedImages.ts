@@ -20,6 +20,24 @@ export const IMAGES = {
     SosAlert: require('../assets/images/sosAlert.png'),
     Add:require('../assets/images/add.png'),
     Search:require('../assets/images/search.png'),
-    SearchInsta:require('../assets/images/searchInsta.png')
+    bloodDrop:require('../assets/images/bloodDrop.png'),
+    blood:require('../assets/images/blood.png'),
+    Colon:require('../assets/images/Colon.png'),
+    Heart:require('../assets/images/Heart.png'),
+    kidney:require('../assets/images/kidney.png'),
+    liver:require('../assets/images/liver.png'),
+    Lungs:require('../assets/images/Lungs.png'),
+    Dr:require('../assets/images/Dr.png'),
+    Pancreatitis:require('../assets/images/Pancreatitis.png'),
+    Thermometer:require('../assets/images/Thermometer.png'),
+    Thyroidtest:require('../assets/images/Thyroidtest.png'),
+    Thyroid:require('../assets/images/Thyroid.png'),
+    urine:require('../assets/images/urine.png'),
+    Bones:require('../assets/images/Bones.png'),
+    testtube:require('../assets/images/testtube.png'),
+    searchInsta:require('../assets/images/searchInsta.png'),
+    ix_ai:require('../assets/images/ix_ai.png'),
+    Group:require('../assets/images/Group.png'),
+
 
 }

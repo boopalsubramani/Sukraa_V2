@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     },
     content: {
         width: "100%",
+        alignItems:"center"
     },
     title: {
         fontSize: 24,
