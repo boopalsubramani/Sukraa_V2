@@ -24,7 +24,8 @@ const CreatePasswordScreen = () => {
       return;
     }
     console.log('Password created:', password);
-    navigation.navigate('Login')
+    navigation.navigate('Login');
+    
   };
 
   return (
