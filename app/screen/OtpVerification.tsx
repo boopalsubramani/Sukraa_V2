@@ -13,6 +13,7 @@ const OTP_LENGTH = 4;
 const RESEND_TIMEOUT = 20;
 
 const OTPVerification = () => {
+  const { width, height } = Dimensions.get('window');
   const navigation = useNavigation();
   const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(''));
   const [timer, setTimer] = useState(RESEND_TIMEOUT);
@@ -70,8 +71,10 @@ const OTPVerification = () => {
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <View style={styles.contentContainer}>
-            <MaskBackground />
+            <View style={{ alignItems: "flex-start",width:width * 0.90 }}>
             <BackArrow />
+            </View>
+            <MaskBackground />
             <View style={{ alignItems: 'center' }}>
               <LogoHeader />
             </View>
@@ -119,6 +122,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: screenWidth * 0.05,
     paddingTop: screenHeight * 0.05,
+         alignItems:"center"
+
   },
   title: {
     fontSize: 24,
@@ -141,6 +146,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20,
+    
+   
   },
   otpInput: {
     width: 54,
@@ -152,10 +159,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginHorizontal: 5,
     backgroundColor: '#fff',
+    
   },
   otpInputFilled: {
     borderColor: '#4c669f',
     backgroundColor: '#f0f4ff',
+    
   },
   resendText: {
     fontSize: 12,

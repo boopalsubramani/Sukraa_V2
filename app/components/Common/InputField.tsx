@@ -30,6 +30,7 @@ const InputField = ({ icon, placeholder, value, onChangeText, secureTextEntry = 
 
 const styles = StyleSheet.create({
   inputWrapper: {
+    justifyContent:"center",
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,

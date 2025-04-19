@@ -68,11 +68,11 @@ const LoginScreen = () => {
             <View style={styles.form}>
               <InputField icon={IMAGES.Envelope} placeholder="Mobile" value={mobile} onChangeText={setMobile} keyboardType="phone-pad" maxLength={10} />
               <InputField icon={IMAGES.Lock} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry={!showPassword} showPassword={showPassword} setShowPassword={setShowPassword} />
-              <View style={{ alignItems: 'flex-end' }}>
+            
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                   <Text style={styles.forgotPassword}>Forgot password?</Text>
                 </TouchableOpacity>
-              </View>
+     
               <GradientButton onPress={handleLogin} title="Log in" />
               <TouchableOpacity onPress={() => Alert.alert('Terms and Conditions', 'Terms and Conditions content goes here.')}>
                 <Text style={styles.link}>Terms and Conditions</Text>
@@ -94,7 +94,7 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: '#fff' },
-  container: { flex: 1 },
+  container: { flex: 1,justifyContent:"center" },
   content: { paddingHorizontal: width * 0.05, paddingVertical: height * 0.05 },
   welcomeContainer: { alignItems: 'center', marginTop: 20 },
   welcomeText: {
@@ -124,11 +124,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', margin: 30, borderRadius: 10, paddingHorizontal: 20
   },
   languageOption: { padding: 10, fontSize: 16 },
-  form: { marginTop: 10 },
+  form: { marginTop: 10,alignItems:'center' },
   forgotPassword: {
     color: '#2376F9', fontWeight: '500',
     fontSize: FONT_SIZE.SM, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',textAlign:"right",width:width * 0.70
   },
   link: {
     marginTop: 12, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,

@@ -9,10 +9,12 @@ import {
     FlatList,
     Image,
     Dimensions,
+    Pressable,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../utils/SharedImages';
 import Header from '../components/Common/Header';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width } = Dimensions.get('window');
@@ -20,31 +22,24 @@ const { width } = Dimensions.get('window');
 const slides = [
     {
         id: '1',
-        // image: require("../assets/image6.png"),
-        image: "",
+        image:IMAGES.Dr,
         title: 'Schedule Your Health Test Now!',
         subtitle: 'Home sample collection & certified lab results.',
     },
     {
         id: '2',
-        // image: require("../assets/image6.png"),
-        image: "",
+        image: IMAGES.Dr,
         title: 'Special Offers',
         subtitle: 'Get 20% off on all health packages',
     },
 ];
 
 const frequentTests = [
-    // { id: '1', name: 'Fever', image: require("../assets/Thermometer.png"), color: '#FFD596',backgroundColor:"#FFF8DD" },
-    // { id: '2', name: 'Urine Test', image: require("../assets/urine.png"), color: '#9EB5F9',backgroundColor:"#F1FAFF" },
-    // { id: '3', name: 'Pancreatitis', image: require("../assets/Pancreatitis.png"), color: '#87C699',backgroundColor:"#E8FFF3"  },
-    // { id: '4', name: 'Blood sugar', image: require("../assets/blood.png"), color: '#D9524F',backgroundColor:"#FFF5F8"  },
-    // { id: '5', name: 'Thyroid test', image: require("../assets/Thyroidtest.png"), color: '#F89C47',backgroundColor:"#FFF9F4"  },
-    { id: '1', name: 'Fever', image: "", color: '#FFD596', backgroundColor: "#FFF8DD" },
-    { id: '2', name: 'Urine Test', image: "", color: '#9EB5F9', backgroundColor: "#F1FAFF" },
-    { id: '3', name: 'Pancreatitis', image: "", color: '#87C699', backgroundColor: "#E8FFF3" },
-    { id: '4', name: 'Blood sugar', image: "", color: '#D9524F', backgroundColor: "#FFF5F8" },
-    { id: '5', name: 'Thyroid test', image: "", color: '#F89C47', backgroundColor: "#FFF9F4" },
+    { id: '1', name: 'Fever', image:IMAGES.Thermometer, color: '#FFD596',backgroundColor:"#FFF8DD" },
+    { id: '2', name: 'Urine Test', image:IMAGES.urine, color: '#9EB5F9',backgroundColor:"#F1FAFF" },
+    { id: '3', name: 'Pancreatitis', image:IMAGES.Pancreatitis, color: '#87C699',backgroundColor:"#E8FFF3"  },
+    { id: '4', name: 'Blood sugar', image:IMAGES.blood, color: '#D9524F',backgroundColor:"#FFF5F8"  },
+    { id: '5', name: 'Thyroid test', image:IMAGES.Thyroidtest, color: '#F89C47',backgroundColor:"#FFF9F4"  },
 ];
 
 const healthPackages = [
@@ -70,13 +65,14 @@ const healthPackages = [
 
 const forWhom = ['Add new', 'Myself', 'Mother', 'Father'];
 
-const relationNameMap = {
+const relationNameMap: Record<'Myself' | 'Mother' | 'Father', string> = {
     'Myself': 'You',
-    'Mother': 'Sudari',
+    'Mother': '',
     'Father': 'Ravi',
 };
 
 const HomeScreen = () => {
+    const navigation = useNavigation()
     const [activeSlide, setActiveSlide] = useState(0);
     const [selectedPerson, setSelectedPerson] = useState('Mother');
     const [paymentMethod, setPaymentMethod] = useState('Cash');
@@ -135,11 +131,11 @@ const HomeScreen = () => {
                     )}
                     keyExtractor={item => item}
                 />
-                {selectedPerson && relationNameMap[selectedPerson] && (
-                    <Text style={styles.selectionName}>
-                        {relationNameMap[selectedPerson]}
-                    </Text>
-                )}
+            {selectedPerson && relationNameMap[selectedPerson] && (
+                <Text style={styles.selectionName}>
+                    {relationNameMap[selectedPerson]}
+                </Text>
+            )}
 
                 {/* Payment Method */}
                 <View style={styles.paymentSection}>
@@ -166,16 +162,25 @@ const HomeScreen = () => {
                 </View>
 
                 {/* Search */}
-                <View style={styles.searchContainer}>
-                    <Image source={IMAGES.Search} />
-                    {/* <Search size={20} color="#666" /> */}
-                    <TextInput
-                        style={styles.searchInput}
-                        placeholder="Search for tests or health packages"
-                        placeholderTextColor="#7E8299"
-                    />
-                    <Image source={IMAGES.SearchInsta} />
-                </View>
+                    <Pressable onPress={() => navigation.navigate('BookingTest')}>
+                            <View style={styles.searchContainer}>
+                                <Image
+                                source={IMAGES.Search}
+                                resizeMode="contain"
+                                />
+                                <TextInput
+                                style={styles.searchInput}
+                                placeholder="Search for tests or health packages"
+                                placeholderTextColor="#7E8299"
+                                editable={false} // Makes the input non-interactive
+                                pointerEvents="none" 
+                                />
+                                <Image
+                                source={IMAGES.searchInsta}
+                                resizeMode="contain"
+                                />
+                            </View>
+                    </Pressable>
 
                 {/* Slides */}
                 <FlatList
@@ -198,13 +203,13 @@ const HomeScreen = () => {
                         >
                             <View style={styles.slideRow}>
                                 {/* Left Image */}
-                                {/* <Image source={item.image} style={styles.slideImage} /> */}
+                                <Image source={item.image} style={styles.slideImage} />
 
                                 {/* Right Content */}
                                 <View style={styles.slideContent}>
                                     <Text numberOfLines={2} ellipsizeMode="tail" style={styles.slideTitle}>{item.title}</Text>
                                     <Text numberOfLines={2} ellipsizeMode="tail" style={styles.slideSubtitle}>{item.subtitle}</Text>
-                                    <TouchableOpacity style={styles.bookButton}>
+                                    <TouchableOpacity style={styles.bookButton} onPress={() => navigation.navigate('BookingTest')}>
                                         <Text style={styles.bookButtonText}>Book Now</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -253,11 +258,7 @@ const HomeScreen = () => {
                                             styles.iconContainer,
                                             { backgroundColor: test.color },
                                         ]}>
-                                        {/* <Image
-                      source={test.image}
-                      style={styles.testImage}
-                      resizeMode="contain"
-                    /> */}
+                                        <Image source={test.image} style={styles.testImage}/>
                                     </View>
                                     <Text style={styles.testLabel}>{test.name}</Text>
                                 </View>
@@ -270,7 +271,7 @@ const HomeScreen = () => {
                 <View style={styles.packageSection}>
                     <View style={styles.packageHeader}>
                         <Text style={styles.sectionTitle}>Health Check Package</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('BookingTest', { index: 1 })}>
                             <Text style={styles.viewMore}>View More</Text>
                         </TouchableOpacity>
                     </View>
@@ -301,16 +302,13 @@ const HomeScreen = () => {
                                                     borderRadius: 10,
                                                     paddingHorizontal: 8,
                                                 }}>
-                                                {/* <Image
-                          source={require('../assets/testtube.png')}
-                          style={styles.testTubeIcon}
-                        /> */}
+                                                        <Image source={IMAGES.testtube} style={styles.testTubeIcon}/>
                                                 <Text style={styles.timeText}>{item.tests}</Text>
                                             </View>
                                         </View>
                                     </View>
                                     <View style={styles.priceContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={() => navigation.navigate('TestDetailsScreen')}>
                                             <LinearGradient
                                                 colors={['#1E3989', '#9B71AA', '#87C699']}
                                                 start={{ x: 0, y: 0 }}
@@ -405,6 +403,7 @@ const styles = StyleSheet.create({
     testImage: {
         width: 24,
         height: 24,
+        resizeMode:"contain"
     },
     searchContainer: {
         flexDirection: 'row',
@@ -524,15 +523,15 @@ const styles = StyleSheet.create({
         color: "#1E3989"
     },
     paymentSection: {
-        // marginTop: 14,
+        marginTop: 14,
     },
     paymentButtons: {
         flexDirection: 'row',
-        // marginHorizontal: 16,
+        marginHorizontal: 16,
     },
     paymentButton: {
-        // paddingHorizontal: 24,
-        // paddingVertical: 12,
+        paddingHorizontal: 24,
+        paddingVertical: 12,
         width: 82,
         height: 44,
         borderRadius: 20,
