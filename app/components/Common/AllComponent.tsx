@@ -13,6 +13,8 @@ import {
   import React from 'react';
   import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../../utils/SharedImages';
+import { useNavigation } from '@react-navigation/native';
+
   const {width, height} = Dimensions.get('window');
 
 
@@ -42,6 +44,7 @@ interface AllComponentProps {
 
   
 const AllComponent: React.FC<AllComponentProps> = ({ packageData, categoryIcons }) => {
+  const navigation = useNavigation()
   return (
     <>
       <ScrollView
@@ -105,7 +108,7 @@ const AllComponent: React.FC<AllComponentProps> = ({ packageData, categoryIcons 
                   </View>
 
                   <View style={styles.priceContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('TestDetailsScreen')}>
                       <LinearGradient
                         colors={['#1E3989', '#9B71AA', '#87C699']}
                         start={{ x: 0, y: 0 }}

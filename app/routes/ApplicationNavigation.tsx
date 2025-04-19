@@ -7,6 +7,8 @@ import OTPVerification from '../screen/OtpVerification';
 import CreatePasswordScreen from '../screen/CreatePasswordScreen';
 import BottomNavigation from './BottomNavigation';
 import BookingTest from '../screen/BookingTest';
+import TestDetailsScreen from '../screen/TestDetailsScreen';
+import MyLabCartscreen from '../screen/MyLabCartscreen';
 
 
 const stack = createStackNavigator();
@@ -20,6 +22,8 @@ const ApplicationNavigation = () => {
                 <stack.Screen name="OtpVerification" component={OTPVerification} />
                 <stack.Screen name="CreatePassword" component={CreatePasswordScreen} />
                 <stack.Screen name="BookingTest" component={BookingTest} />
+                <stack.Screen name="TestDetailsScreen" component={TestDetailsScreen} /> 
+                <stack.Screen name="MyLabCartscreen" component={MyLabCartscreen} /> 
                 <stack.Screen name="Bottom" component={BottomNavigation} />
             </stack.Navigator>
         </NavigationContainer>

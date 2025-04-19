@@ -10,6 +10,7 @@ import PackagesComponent from '../components/Common/PackagesComponent';
 import TestsComponent from '../components/Common/IndividualtestsComponent';
 import UploadComponent from '../components/Common/UploadComponent';
 import { IMAGES } from '../utils/SharedImages';
+import { useRoute } from '@react-navigation/native';
 
 
 const categories = [
@@ -114,10 +115,10 @@ const packageSections = [
     ],
   },
 ];
+
+
 const screenWidth = Dimensions.get('window').width;
 const CategoryButton = ({ label,index, activeCategoryIndex,setActiveCategoryIndex }) => (
-
-
   <TouchableOpacity  onPress={() => setActiveCategoryIndex(index)} style={[styles.categoryButton, activeCategoryIndex  && styles.activeCategory]}>
     <Text style={[styles.categoryText, activeCategoryIndex && styles.activeCategoryText]}>{label}</Text>
   </TouchableOpacity>
@@ -125,12 +126,14 @@ const CategoryButton = ({ label,index, activeCategoryIndex,setActiveCategoryInde
 
 
 export default function BookingTest() {
-    const [activeCategoryIndex, setActiveCategoryIndex] = useState(1);
+  const route = useRoute();
+  const index = route?.params?.index ?? 0;
+    const [activeCategoryIndex, setActiveCategoryIndex] = useState(index);
 
     const renderComponent = () => {
         switch (activeCategoryIndex) {
           case 0: return <AllComponent  packageData ={packageSections} categoryIcons={categoryIcons}/>;
-          case 1: return <PackagesComponent packageData ={packageSections} />;
+          case 1: return <PackagesComponent packageData ={packageSections} categoryIcons={categoryIcons}/>;
           case 2: return <TestsComponent categoryIcons={categoryIcons}/>;
           case 3: return <UploadComponent />;
           default: return null;
@@ -164,7 +167,13 @@ export default function BookingTest() {
 
           {/* Cart Button - Always visible */}
           <TouchableOpacity style={styles.cartButton}>
-          <Image
+                    <View style={styles.cartContainer}>
+                        <Image source={IMAGES.Cart} resizeMode="contain" />
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>1</Text>
+                      </View>
+                    </View>
+          {/* <Image
               source={IMAGES.Cart}
               resizeMode="contain"
               style={styles.icon}
@@ -172,7 +181,7 @@ export default function BookingTest() {
             <View style={styles.cartBadge}>
                 
               <Text style={styles.cartBadgeText}>1</Text>
-            </View>
+            </View> */}
           </TouchableOpacity>
         </View>
       </View>
@@ -215,16 +224,46 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth:1,
     borderColor:"#EFF2F5",
-    borderRadius: 20,
+    borderRadius: 25,
     marginRight: 10,
+    padding:8
   },
   searchInput: {
     flex: 1,
+    justifyContent:"space-around",
     color: '#000',
+    marginLeft: 8,
+    fontSize: 16,
   },
   icon: {
     width: 25,
     height: 25,
+  },
+    cartContainer: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F0F0F0',
+    borderRadius: 20,
+  },
+  badge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    backgroundColor: '#3949AB',
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   cartButton: {
     width: 40,

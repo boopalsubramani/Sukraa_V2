@@ -23,7 +23,6 @@ const CreatePasswordScreen = () => {
     if (password !== confirmPassword) {
       return;
     }
-    console.log('Password created:', password);
     navigation.navigate('Login');
     
   };

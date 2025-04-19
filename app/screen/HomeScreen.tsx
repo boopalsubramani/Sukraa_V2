@@ -271,7 +271,7 @@ const HomeScreen = () => {
                 <View style={styles.packageSection}>
                     <View style={styles.packageHeader}>
                         <Text style={styles.sectionTitle}>Health Check Package</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('BookingTest', { index: 1 })}>
                             <Text style={styles.viewMore}>View More</Text>
                         </TouchableOpacity>
                     </View>
@@ -308,7 +308,7 @@ const HomeScreen = () => {
                                         </View>
                                     </View>
                                     <View style={styles.priceContainer}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={() => navigation.navigate('TestDetailsScreen')}>
                                             <LinearGradient
                                                 colors={['#1E3989', '#9B71AA', '#87C699']}
                                                 start={{ x: 0, y: 0 }}

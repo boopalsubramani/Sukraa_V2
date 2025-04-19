@@ -37,7 +37,15 @@ export const IMAGES = {
     testtube:require('../assets/images/testtube.png'),
     searchInsta:require('../assets/images/searchInsta.png'),
     ix_ai:require('../assets/images/ix_ai.png'),
-    Group:require('../assets/images/Group.png'),
+    check:require('../assets/images/check.png'),
+    water:require('../assets/images/water.png'),
+    Tea:require('../assets/images/Tea.png'),
+    food:require('../assets/images/food.png'),
+    close:require('../assets/images/close.png'),
+    Black:require('../assets/images/Black.png'),
+    back:require('../assets/images/back.png'),
+    remove:require('../assets/images/remove.png'),
+
 
 
 }

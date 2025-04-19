@@ -6,12 +6,14 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
+    ImageSourcePropType,
   } from 'react-native';
   import React from 'react';
   import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../../utils/SharedImages';
+import { useNavigation } from '@react-navigation/native';
   const {width, height} = Dimensions.get('window');
-  
+
   interface PackageItem {
     title: string;
     description: string;
@@ -27,13 +29,42 @@ import { IMAGES } from '../../utils/SharedImages';
   
   interface PackagesComponentProps {
     packageData: PackageSection[];
+    categoryIcons: CategoryIconItem[];
+  }
+  
+  interface CategoryIconItem {
+    label: string;
+    color: string;
+    icon: ImageSourcePropType;
   }
   
 
   
-  const PackagesComponent: React.FC<PackagesComponentProps> = ({ packageData }) => {
+  const PackagesComponent: React.FC<PackagesComponentProps> = ({ packageData,categoryIcons }) => {
+      const navigation = useNavigation()
     return (
-      <View>
+      <>
+            <ScrollView
+              horizontal
+              style={styles.iconRow}
+              showsHorizontalScrollIndicator={false}>
+              {categoryIcons.map((item, index) => (
+                <TouchableOpacity key={index} style={styles.iconContainer}>
+                  <View style={[styles.iconCircle, { backgroundColor: item.color }]}>
+                    <Image
+                      source={item.icon}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        resizeMode: 'contain',
+                        marginRight: 5,
+                      }}
+                    />
+                  </View>
+                  <Text >{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
         {packageData.map((section, index) => (
           <View key={index} style={{ flex: 1 }}>
             <Text style={styles.sectionTitle}>{section.section}</Text>
@@ -66,7 +97,7 @@ import { IMAGES } from '../../utils/SharedImages';
                       </View>
                     </View>
                     <View style={styles.priceContainer}>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={() => navigation.navigate('TestDetailsScreen')}>
                         <LinearGradient
                           colors={['#1E3989', '#9B71AA', '#87C699']}
                           start={{ x: 0, y: 0 }}
@@ -86,7 +117,7 @@ import { IMAGES } from '../../utils/SharedImages';
             </ScrollView>
           </View>
         ))}
-      </View>
+      </>
     );
   };
   

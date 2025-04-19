@@ -65,11 +65,7 @@ export default function UploadComponent() {
       style={styles.gradientBorder}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image
-            source={IMAGES.ix_ai}
-            resizeMode="contain"
-           
-          />
+          <Image source={IMAGES.ix_ai} resizeMode="contain"/>
           <Text style={styles.title}>Have a prescription?</Text>
         </View>
 
