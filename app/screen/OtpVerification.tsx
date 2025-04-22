@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Dimensions, Image, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GradientButton from '../components/Common/GradientButton';
-import BackArrow from '../components/Common/BackArrow';
 import LogoHeader from '../components/Common/LogoHeader';
 import MaskBackground from '../components/Common/MaskBackground';
 import { FONT_FAMILY } from '../utils/Constants';
 import Footer from '../components/Common/Footer';
+import { IMAGES } from '../utils/SharedImages'; 
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const OTP_LENGTH = 4;
@@ -69,9 +69,11 @@ const OTPVerification = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
+          <MaskBackground />
           <View style={styles.contentContainer}>
-            <MaskBackground />
-            <BackArrow />
+            <TouchableOpacity style={styles.backArrow} onPress={() => navigation.goBack()}>
+              <Image source={IMAGES.LeftArrow} style={styles.backArrowImage} />
+            </TouchableOpacity>
             <View style={{ alignItems: 'center' }}>
               <LogoHeader />
             </View>
@@ -100,7 +102,7 @@ const OTPVerification = () => {
           </View>
         </View>
       </ScrollView>
-      <Footer/>
+      <Footer />
     </KeyboardAvoidingView>
   );
 };
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -117,40 +120,51 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   contentContainer: {
-    paddingHorizontal: screenWidth * 0.05,
-    paddingTop: screenHeight * 0.05,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  backArrow: {
+    position: 'absolute',
+    top: screenHeight * 0.02,
+    left: screenWidth * 0.05,
+    zIndex: 1,
+  },
+  backArrowImage: {
+    width: screenWidth * 0.04,
+    height: screenWidth * 0.04,
+    tintColor: '#00071A',
+    resizeMode: 'contain', 
   },
   title: {
-    fontSize: 24,
+    fontSize: screenWidth * 0.06,
     fontWeight: '600',
     color: '#00071A',
-    textAlign: 'center',
-    lineHeight: 20,
-    fontFamily: FONT_FAMILY.fontFamilyWixSemiBold
+    fontFamily: FONT_FAMILY.fontFamilyWixSemiBold,
   },
   subtitle: {
-    fontSize: 16,
+    marginBottom: screenHeight * 0.02,
+    fontSize: screenWidth * 0.04,
     color: '#7E8299',
-    textAlign: 'center',
-    marginVertical: 20,
-    lineHeight: 18,
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
-    fontWeight: '500'
+    marginTop: screenHeight * 0.01,
+    fontWeight: '500',
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
   },
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: screenHeight * 0.02,
   },
   otpInput: {
-    width: 54,
-    height: 54,
+    width: screenWidth * 0.12,
+    height: screenWidth * 0.12,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#E4E6EF',
     textAlign: 'center',
     fontWeight: '600',
-    marginHorizontal: 5,
+    marginHorizontal: screenWidth * 0.01,
     backgroundColor: '#fff',
   },
   otpInputFilled: {
@@ -158,10 +172,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f4ff',
   },
   resendText: {
-    fontSize: 12,
+    fontSize: screenWidth * 0.03,
     color: '#3F4254',
     textAlign: 'center',
-    lineHeight:26,
+    lineHeight: screenHeight * 0.03,
     fontWeight: '500',
     fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
   },
@@ -171,4 +185,3 @@ const styles = StyleSheet.create({
 });
 
 export default OTPVerification;
-

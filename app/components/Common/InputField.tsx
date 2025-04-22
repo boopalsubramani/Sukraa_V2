@@ -1,8 +1,9 @@
-
 import React from 'react';
-import { View, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { IMAGES } from '../../utils/SharedImages';
 import { FONT_FAMILY } from '../../utils/Constants';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const InputField = ({ icon, placeholder, value, onChangeText, secureTextEntry = false, keyboardType = 'default', showPassword, setShowPassword }: any) => {
   return (
@@ -35,30 +36,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E4E6EF',
     borderRadius: 100,
-    paddingHorizontal: 12,
-    marginBottom: 16,
-    width: 306,
-    height: 48,
+    paddingHorizontal: screenWidth * 0.03,
+    marginBottom: screenWidth * 0.04, 
+    width: screenWidth * 0.8,
+    height: screenWidth * 0.12, 
   },
   inputIcon: {
-    width: 20,
-    height: 16,
+    width: screenWidth * 0.05, 
+    height: screenWidth * 0.04, 
     resizeMode: 'contain',
-    tintColor: '#82869D'
+    tintColor: '#82869D',
   },
   input: {
     flex: 1,
-    fontSize: 16,
+    fontSize: screenWidth * 0.04, 
     fontWeight: '500',
     fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
     color: '#B5B5C3',
   },
   eyeIconImage: {
-    width: 18,
-    height: 12,
+    width: screenWidth * 0.045, 
+    height: screenWidth * 0.03, 
     resizeMode: 'contain',
   },
 });
 
 export default InputField;
-

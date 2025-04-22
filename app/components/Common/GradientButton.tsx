@@ -1,7 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { FONT_FAMILY } from '../../utils/Constants';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const GradientButton = ({ onPress, title }: any) => {
   return (
@@ -20,18 +22,18 @@ const GradientButton = ({ onPress, title }: any) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: 306,
-    height: 48,
+    width: screenWidth * 0.8, 
+    height: screenWidth * 0.12,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
-    marginTop: 20,
+    marginTop: screenWidth * 0.05, 
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: screenWidth * 0.04, 
     fontWeight: '500',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
   },
 });
 

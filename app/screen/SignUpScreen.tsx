@@ -39,8 +39,8 @@ const SignupScreen = ({ navigation }: any) => {
         >
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.container}>
+                    <MaskBackground position='right' />
                     <View style={styles.contentContainer}>
-                        <MaskBackground position='right' />
                         <LogoHeader />
                         <View style={styles.content}>
                             <Text style={styles.title}>Welcome to SDL</Text>
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
+        alignItems: 'center',
     },
     keyboardAvoidingView: {
         flex: 1,
@@ -105,37 +106,44 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     contentContainer: {
-        paddingHorizontal: screenWidth * 0.05,
-        paddingTop: screenHeight * 0.1,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     content: {
-        width: "100%",
+        alignItems: 'center',
+        marginTop: screenHeight * 0.02,
     },
     title: {
-        fontSize: 24,
-        marginBottom: 8,
-        textAlign: 'center',
+        fontSize: screenWidth * 0.06,
         fontWeight: '600',
         color: '#00071A',
-        fontFamily: FONT_FAMILY.fontFamilyWixSemiBold
+        fontFamily: FONT_FAMILY.fontFamilyWixSemiBold,
     },
     subtitle: {
-        fontSize: 16,
-        fontWeight: '500',
-        marginBottom: 24,
-        lineHeight: 18,
-        textAlign: 'center',
+        marginBottom: screenHeight * 0.02,
+        fontSize: screenWidth * 0.04,
         color: '#7E8299',
-        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium
+        marginTop: screenHeight * 0.01,
+        fontWeight: '500',
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
     },
     signUpPrefix: {
-        color: '#00071A', fontWeight: '500', fontSize: 14,
-        lineHeight: 18, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium
+        color: '#00071A',
+        fontWeight: '500',
+        fontSize: screenWidth * 0.035,
+        lineHeight: screenHeight * 0.025,
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
     },
     link: {
-        marginTop: 12, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
-        fontSize: 14, fontWeight: '500', color: '#2376F9', textAlign: 'center'
+        marginTop: screenHeight * 0.015,
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
+        fontSize: screenWidth * 0.035,
+        fontWeight: '500',
+        color: '#2376F9',
+        textAlign: 'center',
     },
 });
 
 export default SignupScreen;
+

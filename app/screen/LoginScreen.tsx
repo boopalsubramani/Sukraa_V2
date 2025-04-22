@@ -24,17 +24,16 @@ const LoginScreen = () => {
   const languages = ['English (US)', 'Hindi', 'Tamil', 'Spanish'];
 
   const handleLogin = () => {
-    // if (!mobile || !password) return Alert.alert('Validation Error', 'Please fill in all fields.');
     Alert.alert('Login', 'Login Successful!');
-    navigation.navigate('Bottom')
+    navigation.navigate('Bottom');
   };
 
   return (
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
+          <MaskBackground position="left" flip />
           <View style={styles.content}>
-            <MaskBackground position="left" flip />
             <LogoHeader />
             <View style={styles.welcomeContainer}>
               <Text style={styles.welcomeText}>Welcome back</Text>
@@ -94,52 +93,104 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: '#fff' },
-  container: { flex: 1 },
-  content: { paddingHorizontal: width * 0.05, paddingVertical: height * 0.05 },
-  welcomeContainer: { alignItems: 'center', marginTop: 20 },
+  scrollViewContent: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  welcomeContainer: {
+    alignItems: 'center',
+    marginTop: height * 0.02,
+  },
   welcomeText: {
-    fontSize: 24, fontWeight: '600', color: '#00071A',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold
+    fontSize: width * 0.06,
+    fontWeight: '600',
+    color: '#00071A',
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold,
   },
   subText: {
-    fontSize: 16, color: '#7E8299', marginTop: 8, fontWeight: '500',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular
+    fontSize: width * 0.04,
+    color: '#7E8299',
+    marginTop: height * 0.01,
+    fontWeight: '500',
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
   },
   languageSelector: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    alignSelf: 'center', marginTop: 10, width: 110, height: 34,
-    borderWidth: 1, borderColor: '#E4E6EF', borderRadius: 100, paddingHorizontal: 10
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: height * 0.01,
+    width: width * 0.28,
+    height: height * 0.04,
+    borderWidth: 1,
+    borderColor: '#E4E6EF',
+    borderRadius: 100,
+    paddingHorizontal: width * 0.025,
   },
   languageText: {
-    fontSize: 14, flex: 1, fontWeight: '600', color: '#3F4254',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular
+    fontSize: width * 0.035,
+    flex: 1,
+    fontWeight: '600',
+    color: '#3F4254',
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
   },
   chevronIcon: {
-    width: 10, height: 10, tintColor: '#3F4254', resizeMode: 'contain'
+    width: width * 0.025,
+    height: width * 0.025,
+    tintColor: '#3F4254',
+    resizeMode: 'contain',
   },
   modalOverlay: {
-    flex: 1, justifyContent: 'center', backgroundColor: '#000000aa'
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#000000aa',
   },
   modalContent: {
-    backgroundColor: '#fff', margin: 30, borderRadius: 10, paddingHorizontal: 20
+    backgroundColor: '#fff',
+    margin: width * 0.075,
+    borderRadius: 10,
+    paddingHorizontal: width * 0.05,
   },
-  languageOption: { padding: 10, fontSize: 16 },
-  form: { marginTop: 10 },
+  languageOption: {
+    padding: height * 0.015,
+    fontSize: width * 0.04,
+  },
+  form: {
+    marginTop: height * 0.02,
+    width: '100%',
+  },
   forgotPassword: {
-    color: '#2376F9', fontWeight: '500',
-    fontSize: FONT_SIZE.SM, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
-    textDecorationLine: 'underline'
+    color: '#2376F9',
+    fontWeight: '500',
+    fontSize: width * 0.035,
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
+    textDecorationLine: 'underline',
   },
   link: {
-    marginTop: 12, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
-    fontSize: 14, fontWeight: '500', color: '#2376F9', textAlign: 'center'
+    marginTop: height * 0.015,
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
+    fontSize: width * 0.035,
+    fontWeight: '500',
+    color: '#2376F9',
+    textAlign: 'center',
   },
-  signUpText: { textAlign: 'center' },
+  signUpText: {
+    textAlign: 'center',
+  },
   signUpPrefix: {
-    color: '#00071A', fontWeight: '500', fontSize: 14,
-    lineHeight: 18, fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium
+    color: '#00071A',
+    fontWeight: '500',
+    fontSize: width * 0.035,
+    lineHeight: height * 0.025,
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
   },
 });
 
 export default LoginScreen;
-

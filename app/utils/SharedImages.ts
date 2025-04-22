@@ -25,7 +25,26 @@ export const IMAGES = {
     Fever: require('../assets/images/fever.png'),
     BloodDrop: require('../assets/images/bloodDrop.png'),
     Thyroid: require('../assets/images/thyroid.png'),
-    Urine: require('../assets/images/urine.png')
-
-
+    Urine: require('../assets/images/urine.png'),
+    UpArrow: require('../assets/images/upArrow.png'),
+    Telescope: require('../assets/images/telescope.png'),
+    ProfileImage: require('../assets/images/profileImage.png'),
+    Pen: require('../assets/images/pen.png'),
+    Settings: require('../assets/images/settings.png'),
+    ManageBranch: require('../assets/images/manageBranches.png'),
+    ManageMember: require('../assets/images/manageMembers.png'),
+    ManageAddress: require('../assets/images/manageAddress.png'),
+    AboutUs: require('../assets/images/aboutUs.png'),
+    ContactUs: require('../assets/images/contactUs.png'),
+    Logout: require('../assets/images/logout.png'),
+    UserPen: require('../assets/images/userPen.png'),
+    Delete: require('../assets/images/delete.png'),
+    Rectangle_1: require('../assets/images/Rectangle1.png'),
+    Rectangle_2: require('../assets/images/Rectangle2.png'),
+    Rectangle_3: require('../assets/images/Rectangle3.png'),
+    Rectangle_4: require('../assets/images/Rectangle4.png'),
+    Rectangle_5: require('../assets/images/Rectangle5.png'),
+    Rectangle_6: require('../assets/images/Rectangle6.png'),
+    Timer:require('../assets/images/timer.png'),
+    Calendar:require('../assets/images/calendar1.png')
 }

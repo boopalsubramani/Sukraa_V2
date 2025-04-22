@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import { IMAGES } from '../../utils/SharedImages';
 
-const deviceHeight = Dimensions.get('window').height;
+const { height: deviceHeight } = Dimensions.get('window');
 
 const LogoHeader = () => {
     return (
@@ -15,16 +15,13 @@ const LogoHeader = () => {
 const styles = StyleSheet.create({
     header: {
         alignItems: 'center',
-        marginTop: 30,
-    
     },
     logo: {
-        marginTop: 30,
-        alignSelf: 'center',
-        width: deviceHeight * (5 / 10),
-        height: deviceHeight * (3 / 28),
-        resizeMode: "contain"
+        width: deviceHeight * 0.20, 
+        height: deviceHeight * 0.10, 
+        resizeMode: 'contain',
     },
 });
 
 export default LogoHeader;
+
