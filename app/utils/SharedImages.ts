@@ -45,6 +45,9 @@ export const IMAGES = {
     Rectangle_4: require('../assets/images/Rectangle4.png'),
     Rectangle_5: require('../assets/images/Rectangle5.png'),
     Rectangle_6: require('../assets/images/Rectangle6.png'),
-    Timer:require('../assets/images/timer.png'),
-    Calendar:require('../assets/images/calendar1.png')
+    Timer: require('../assets/images/timer.png'),
+    Calendar: require('../assets/images/calendar1.png'),
+    Pdf: require('../assets/images/pdf.png'),
+    BookSummary: require('../assets/images/bookSummary.png'),
+    Star:require('../assets/images/star.png'),
 }

@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from 'react-native';
 import { IMAGES } from '../utils/SharedImages';
 import HomeScreen from '../screen/HomeScreen';
-import EventScreen from '../screen/EventScreen';
 import TrendScreen from '../screen/TrendScreen';
 import ProfileScreen from '../screen/ProfileScreen';
+import BookingsScreen from '../screen/BookingScreen';
 
 const Bottom = createBottomTabNavigator();
 
@@ -44,10 +44,10 @@ const BottomNavigation = () => {
                 }}
             />
             <Bottom.Screen
-                name="Event"
-                component={EventScreen}
+                name="Booking"
+                component={BookingsScreen}
                 options={{
-                    tabBarLabel: 'Event',
+                    tabBarLabel: 'Booking',
                     tabBarIcon: ({ focused }) => (
                         <TabIcon source={IMAGES.BottomCalender} />
                     ),

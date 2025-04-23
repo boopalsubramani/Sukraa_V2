@@ -86,7 +86,7 @@ const ManageMemberScreen = ({ navigation }: any) => {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.gradientButton}>
                         <LinearGradient
-                            colors={['#3B82F6', '#10B981']}
+                            colors={['#1E3989', '#9B71AA', '#87C699']}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
                             style={styles.gradient}>

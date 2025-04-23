@@ -13,6 +13,8 @@ import ManageMemberScreen from '../screen/ManageMemberScreen';
 import AboutUsScreen from '../screen/AboutUsScreen';
 import ManageBranchesScreen from '../screen/ManageBranchScreen';
 import NotificationScreen from '../screen/NotificationScreen';
+import BookingsScreen from '../screen/BookingScreen';
+import BookingSummaryScreen from '../screen/BookingSummaryScreen';
 
 
 const stack = createStackNavigator();
@@ -33,7 +35,8 @@ const ApplicationNavigation = () => {
                 <stack.Screen name="AboutUs" component={AboutUsScreen} />
                 <stack.Screen name="ManageBranch" component={ManageBranchesScreen} />
                 <stack.Screen name="Notification" component={NotificationScreen} />
-
+                <stack.Screen name="Booking" component={BookingsScreen} />
+                <stack.Screen name="BookingSummary" component={BookingSummaryScreen} />
             </stack.Navigator>
         </NavigationContainer>
     );
