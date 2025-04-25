@@ -184,15 +184,16 @@ const styles = StyleSheet.create({
         flex: 1,
         borderWidth: 1,
         borderColor: '#3B82F6',
-        borderRadius: 30,
+        borderRadius: 100,
         paddingVertical: 14,
-        alignItems: 'center',
         marginRight: 8,
+        alignItems:'center'
     },
     outlineButtonText: {
         color: '#1E3989',
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: 14,
+        alignItems:'center',
         fontFamily:FONT_FAMILY.fontFamilyWixMedium
     },
     gradientButton: {
@@ -200,13 +201,13 @@ const styles = StyleSheet.create({
     },
     gradient: {
         paddingVertical: 14,
-        borderRadius: 30,
+        borderRadius: 100,
         alignItems: 'center',
     },
     buttonText: {
         color: '#fff',
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: 14,
         fontFamily:FONT_FAMILY.fontFamilyWixMedium
 
     },

@@ -1,14 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Dimensions, Image, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+  Dimensions,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import GradientButton from '../components/Common/GradientButton';
 import LogoHeader from '../components/Common/LogoHeader';
 import MaskBackground from '../components/Common/MaskBackground';
-import { FONT_FAMILY } from '../utils/Constants';
+import {FONT_FAMILY} from '../utils/Constants';
 import Footer from '../components/Common/Footer';
-import { IMAGES } from '../utils/SharedImages'; 
+import {IMAGES} from '../utils/SharedImages';
+import {useOtp_VerificationMutation} from '../redux/service/Otp_VerificationService';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 const OTP_LENGTH = 4;
 const RESEND_TIMEOUT = 20;
 
@@ -18,6 +30,9 @@ const OTPVerification = () => {
   const [timer, setTimer] = useState(RESEND_TIMEOUT);
   const [isResendActive, setIsResendActive] = useState(false);
   const inputRefs = useRef([]);
+
+  const [sendVerificationAPIReq, setSendVerificationAPIRes] =
+    useOtp_VerificationMutation();
 
   useEffect(() => {
     let interval;
@@ -65,20 +80,23 @@ const OTPVerification = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingView}
-    >
+      style={styles.keyboardAvoidingView}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <MaskBackground />
           <View style={styles.contentContainer}>
-            <TouchableOpacity style={styles.backArrow} onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              style={styles.backArrow}
+              onPress={() => navigation.goBack()}>
               <Image source={IMAGES.LeftArrow} style={styles.backArrowImage} />
             </TouchableOpacity>
-            <View style={{ alignItems: 'center' }}>
+            <View style={{alignItems: 'center'}}>
               <LogoHeader />
             </View>
             <Text style={styles.title}>OTP Verification</Text>
-            <Text style={styles.subtitle}>Enter OTP sent to +966 5 1234 5678</Text>
+            <Text style={styles.subtitle}>
+              Enter OTP sent to +966 5 1234 5678
+            </Text>
             <View style={styles.otpContainer}>
               {otp.map((digit, index) => (
                 <TextInput
@@ -93,8 +111,14 @@ const OTPVerification = () => {
                 />
               ))}
             </View>
-            <TouchableOpacity onPress={handleResendOTP} disabled={!isResendActive}>
-              <Text style={[styles.resendText, !isResendActive && styles.resendTextInactive]}>
+            <TouchableOpacity
+              onPress={handleResendOTP}
+              disabled={!isResendActive}>
+              <Text
+                style={[
+                  styles.resendText,
+                  !isResendActive && styles.resendTextInactive,
+                ]}>
                 {isResendActive ? 'Resend OTP' : `Resend OTP in ${timer}s`}
               </Text>
             </TouchableOpacity>
@@ -135,7 +159,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.04,
     height: screenWidth * 0.04,
     tintColor: '#00071A',
-    resizeMode: 'contain', 
+    resizeMode: 'contain',
   },
   title: {
     fontSize: screenWidth * 0.06,
