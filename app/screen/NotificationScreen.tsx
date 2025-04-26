@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -8,53 +8,115 @@ import {
     SafeAreaView,
     Image,
     Dimensions,
+    ActivityIndicator,
 } from 'react-native';
 import { IMAGES } from '../utils/SharedImages';
 import { FONT_FAMILY } from '../utils/Constants';
+import { useNotificationListMutation } from '../redux/service/NotificationListService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNotificationUpdateMutation } from '../redux/service/NotificationUpdateService';
 
 const { width, height } = Dimensions.get('window');
 
-const notifications = [
-    {
-        id: '1',
-        title: 'Schedule Confirmation',
-        message: 'You have successfully done a sample reg...',
-        time: '12:30 PM',
-        isRead: false,
-    },
-    {
-        id: '2',
-        title: 'Schedule Confirmation',
-        message: 'You have successfully done a sample reg...',
-        time: '11:30 AM',
-        isRead: false,
-    },
-    {
-        id: '3',
-        title: 'Schedule Confirmation',
-        message: 'You have successfully done a sample reg...',
-        time: '1 day ago',
-        isRead: true,
-    },
-    {
-        id: '4',
-        title: 'Schedule Confirmation',
-        message: 'You have successfully done a sample reg...',
-        time: '17th April,2025',
-        isRead: true,
-    },
-];
-
-
 const NotificationScreen = ({ navigation }: any) => {
+    const [notificationListAPIReq, { isLoading }] = useNotificationListMutation();
+    const [notificationUpdateAPIReq] = useNotificationUpdateMutation();
+
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const storedUserDetails: any = await AsyncStorage.getItem('userDetails');
+                if (storedUserDetails) {
+                    const parsedDetails = JSON.parse(storedUserDetails);
+                    const username = parsedDetails?.UserName;
+                    if (!username) return;
+
+                    const response: any = await notificationListAPIReq({ Username: username });
+                    console.log('Notification API Response:', response);
+
+                    if (response?.data?.SuccessFlag === 'true' && Array.isArray(response.data.Message)) {
+                        let allNotifications: any[] = [];
+
+                        response.data.Message.forEach((section: any) => {
+                            if (Array.isArray(section.Notification_List)) {
+                                const sectionNotifications = section.Notification_List.map((item: any) => ({
+                                    id: item.Notification_Id,
+                                    title: 'Notification',
+                                    message: item.Notify_Message,
+                                    time: item.Time_Diff_Desc,
+                                    isRead: item.IsRead !== '0', 
+                                }));
+                                allNotifications = [...allNotifications, ...sectionNotifications];
+                            }
+                        });
+
+                        setNotifications(allNotifications);
+                    } else {
+                        console.log('No valid notifications found.');
+                        setNotifications([]); 
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+        fetchNotifications();
+    }, []);
+
     const handleBack = () => {
         navigation.goBack();
     };
 
+    const handleMarkAllAsRead = async () => {
+        try {
+            const storedUserDetails: any = await AsyncStorage.getItem('userDetails');
+            if (storedUserDetails) {
+                const parsedDetails = JSON.parse(storedUserDetails);
+                const username = parsedDetails?.UserName;
+                if (!username) return;
+
+                // Update notification status for each notification
+                const updatedNotifications = notifications.map((notification) => ({
+                    ...notification,
+                    isRead: 1,
+                }));
+                setNotifications(updatedNotifications);
+
+                // Make the API call to update each notification as read
+                await Promise.all(
+                    notifications.map(async (notification) => {
+                        if (!notification.isRead) {
+                            const response = await notificationUpdateAPIReq({
+                                Username: username,
+                                Notify_Id: notification.id,
+                                Notify_Status: 'R', 
+                            });
+                            console.log('Notification Update Response:', response);
+                        }
+                    })
+                );
+            }
+        } catch (error) {
+            console.error('Error updating notifications:', error);
+        }
+    };
+
+    const filteredNotifications =
+        activeTab === 'unread'
+            ? notifications.filter((item: any) => !item.isRead)
+            : notifications;
+
     const renderItem = ({ item }: any) => (
         <View style={[styles.notificationItem, !item.isRead && styles.unreadBackground]}>
             <View style={styles.iconWrapper}>
-                <Image source={IMAGES.Calendar} style={{ width: 18, height: 12, resizeMode: 'contain' }} />
+                <Image
+                    source={IMAGES.Calendar}
+                    style={{ width: 18, height: 12, resizeMode: 'contain' }}
+                />
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.title}>{item.title}</Text>
@@ -74,27 +136,37 @@ const NotificationScreen = ({ navigation }: any) => {
                 <Text style={styles.header}>Notification</Text>
             </View>
 
-            {/* Tabs and Mark all */}
+            {/* Tabs */}
             <View style={styles.tabContainer}>
-                <TouchableOpacity style={styles.tabButton}>
-                    <Text style={styles.tabTextActive}>All</Text>
+                <TouchableOpacity style={styles.tabButton} onPress={() => setActiveTab('all')}>
+                    <Text style={[styles.tabText, activeTab === 'all' && styles.tabTextActive]}>
+                        All
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.tabButton}>
-                    <Text style={styles.tabText}>Unread</Text>
+                <TouchableOpacity style={styles.tabButton} onPress={() => setActiveTab('unread')}>
+                    <Text style={[styles.tabText, activeTab === 'unread' && styles.tabTextActive]}>
+                        Unread
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.markAll}>
+                <TouchableOpacity style={styles.markAll} onPress={handleMarkAllAsRead}>
                     <Text style={styles.markAllText}>Mark all as read</Text>
                 </TouchableOpacity>
             </View>
 
-            {/* Notifications List */}
-            <FlatList
-                data={notifications}
-                keyExtractor={item => item.id}
-                renderItem={renderItem}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
-                contentContainerStyle={{ paddingBottom: 20 }}
-            />
+            {/* Loader or Empty or List */}
+            {isLoading ? (
+                <ActivityIndicator size="large" color="#1E3989" style={{ marginTop: 20 }} />
+            ) : filteredNotifications.length === 0 ? (
+                <Text style={styles.emptyText}>No notifications found.</Text>
+            ) : (
+                <FlatList
+                    data={filteredNotifications}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                    ItemSeparatorComponent={() => <View style={styles.separator} />}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                />
+            )}
         </SafeAreaView>
     );
 };
@@ -139,13 +211,13 @@ const styles = StyleSheet.create({
         fontSize: 12,
         borderBottomWidth: 2,
         borderBottomColor: '#0A47A8',
-        fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold,
     },
     tabText: {
         color: '#3F4254',
         fontWeight: '500',
         fontSize: 12,
-        fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold,
     },
     markAll: {
         marginLeft: 'auto',
@@ -154,7 +226,7 @@ const styles = StyleSheet.create({
         color: '#1E3989',
         fontWeight: '500',
         fontSize: 14,
-        fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold,
     },
     notificationItem: {
         flexDirection: 'row',
@@ -180,13 +252,13 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontSize: 14,
         color: '#181C32',
-        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
     },
     message: {
         color: '#666',
         fontSize: 14,
         fontWeight: '400',
-        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
     },
     timeText: {
         color: '#7E8299',
@@ -199,5 +271,12 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: '#E4E6EF',
         marginVertical: 4,
+    },
+    emptyText: {
+        textAlign: 'center',
+        marginTop: 40,
+        fontSize: 14,
+        color: '#7E8299',
+        fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
     },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { FONT_FAMILY } from '../../utils/Constants';
+import { COLOR, FONT_FAMILY } from '../../utils/Constants';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginTop: screenWidth * 0.05, 
   },
   buttonText: {
-    color: 'white',
+    color:COLOR.WHITE_COLOR,
     fontSize: screenWidth * 0.04, 
     fontWeight: '500',
     fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,

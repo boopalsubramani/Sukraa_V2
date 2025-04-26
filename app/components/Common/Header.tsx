@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,10 +12,56 @@ import { IMAGES } from '../../utils/SharedImages';
 import { useNavigation } from '@react-navigation/native';
 import { FONT_FAMILY } from '../../utils/Constants';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNotification_CountMutation } from '../../redux/service/NotificationCountService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Header = ({ location = 'Riyadh, Saudi Arabia' }) => {
   const navigation = useNavigation();
+  const [userName, setUserName] = useState(null);
   const [isSosModalVisible, setSosModalVisible] = useState(false);
+  const [notifyCount, setNotifyCount] = useState(0);
+  const [notificationCountApiReq] = useNotification_CountMutation();
+
+  // Fetch username from AsyncStorage on mount
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const storedUserDetails: any = await AsyncStorage.getItem('userDetails');
+        if (storedUserDetails) {
+          const parsedDetails = JSON.parse(storedUserDetails);
+          console.log(parsedDetails, "parsedDetails");
+          setUserName(parsedDetails?.UserName); 
+        }
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
+
+  // Fetch notification count after username is set
+  useEffect(() => {
+    if (!userName) return;
+
+    const fetchNotificationCount = async () => {
+      try {
+        const response = await notificationCountApiReq({
+          UserName: userName,
+        }).unwrap();
+        if (response?.SuccessFlag === 'true') {
+          const count = response?.Message?.[0]?.Notify_Count;
+          setNotifyCount(count);
+        }
+      } catch (error) {
+        console.error('Notification count fetch error:', error);
+      }
+    };
+
+    fetchNotificationCount();
+  }, [userName]);
+  console.log(notifyCount, "count");
 
   return (
     <>
@@ -33,8 +79,22 @@ const Header = ({ location = 'Riyadh, Saudi Arabia' }) => {
           </TouchableOpacity>
           <HeaderIcon icon={IMAGES.Cart} style={styles.cartIcon} />
           <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-            <HeaderIcon icon={IMAGES.Notification} style={styles.notificationIcon} />
+            <View style={{ position: 'relative' }}>
+              <HeaderIcon
+                icon={IMAGES.Notification}
+                style={styles.notificationIcon}
+              />
+              {notifyCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
+                    {notifyCount > 9 ? '9+' : notifyCount.toString()}
+                  </Text>
+                </View>
+              )}
+            </View>
           </TouchableOpacity>
+
+
         </View>
       </View>
 
@@ -43,30 +103,27 @@ const Header = ({ location = 'Riyadh, Saudi Arabia' }) => {
         animationType="slide"
         transparent={true}
         visible={isSosModalVisible}
-        onRequestClose={() => setSosModalVisible(false)}
-      >
+        onRequestClose={() => setSosModalVisible(false)}>
         <TouchableOpacity
           activeOpacity={1}
           style={styles.modalContainer}
-          onPressOut={() => setSosModalVisible(false)}
-        >
+          onPressOut={() => setSosModalVisible(false)}>
           <TouchableOpacity
             activeOpacity={1}
             style={styles.modalContentWrapper}
-            onPress={() => { }} 
-          >
+            onPress={() => { }}>
             <View style={styles.modalContent}>
               <Image source={IMAGES.SosAlert} style={styles.sosIcon} />
               <Text style={styles.modalTitleSos}>Sos Alert</Text>
               <Text style={styles.modalTitle}>
-                Are you sure want to send emergency alert message to your customer service
+                Are you sure want to send emergency alert message to your
+                customer service
               </Text>
 
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => setSosModalVisible(false)}
-                >
+                  onPress={() => setSosModalVisible(false)}>
                   <Text style={styles.buttonText}>No</Text>
                 </TouchableOpacity>
 
@@ -74,15 +131,12 @@ const Header = ({ location = 'Riyadh, Saudi Arabia' }) => {
                   style={{ flex: 1, marginHorizontal: 5 }}
                   onPress={() => {
                     setSosModalVisible(false);
-                    // Trigger SOS action here if needed
-                  }}
-                >
+                  }}>
                   <LinearGradient
                     colors={['#1E3989', '#9B71AA', '#87C699']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
-                    style={styles.callButton}
-                  >
+                    style={styles.callButton}>
                     <Text style={styles.gradientText}>Yes</Text>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -145,10 +199,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: '#DB3437',
   },
-  modalContentWrapper: {
-    width: '90%',
-    alignItems: 'center',
-  },
   cartIcon: {
     width: 18,
     height: 18,
@@ -160,6 +210,29 @@ const styles = StyleSheet.create({
     height: 20,
     resizeMode: 'contain',
     tintColor: '#82869D',
+  },
+  badge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    backgroundColor: 'red',
+    borderRadius: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    minWidth: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold,
+    textAlign: 'center',
+  },
+  modalContentWrapper: {
+    width: '90%',
+    alignItems: 'center',
   },
   modalContainer: {
     flex: 1,

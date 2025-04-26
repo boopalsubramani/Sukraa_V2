@@ -8,17 +8,24 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import {setupListeners} from '@reduxjs/toolkit/query';
-import {configureStore, combineReducers} from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Utilities and component
-import {api} from '../utils/API';
+import { api } from '../utils/API';
 import appsettings from '../redux/slice/AppSettingsSlice';
 import login from '../redux/slice/LoginSlice';
 import signUp from '../redux/slice/SignUpSlice';
 import otp_send from '../redux/slice/Otp_SendSlice';
 import otp_verification from '../redux/slice/Otp_VerificationSlice';
+import notification_count from '../redux/slice/NotificationCountSlice';
+import notificationList from '../redux/slice/NotificationListSlice';
+import notificationUpdate from '../redux/slice/NotificationUpdateSlice';
+import getGender from '../redux/slice/GetGenderSlice';
+import getTitle from '../redux/slice/GetTitleSlice';
+import getRelationship from '../redux/slice/GetRelationshipSlice';
+import userView from '../redux/slice/UserViewSlice';
 
 const reducers = combineReducers({
   [api.reducerPath]: api.reducer,
@@ -26,7 +33,15 @@ const reducers = combineReducers({
   login,
   signUp,
   otp_send,
-  otp_verification
+  otp_verification,
+  notification_count,
+  notificationList,
+  notificationUpdate,
+  getGender,
+  getTitle,
+  getRelationship,
+  userView
+
 });
 
 const persistConfig = {
@@ -61,4 +76,4 @@ const persistor = persistStore(store);
 
 setupListeners(store.dispatch);
 
-export {store, persistor};
+export { store, persistor };

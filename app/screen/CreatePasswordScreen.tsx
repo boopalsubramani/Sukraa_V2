@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     color: '#7E8299',
     marginTop: screenHeight * 0.01,
     fontWeight: '500',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
   },
   inputContainer: {
     marginBottom: screenHeight * 0.02,

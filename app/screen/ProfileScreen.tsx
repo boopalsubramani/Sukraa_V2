@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,62 @@ import {
 import { IMAGES } from '../utils/SharedImages';
 import { FONT_FAMILY } from '../utils/Constants';
 import LinearGradient from 'react-native-linear-gradient';
+import { useUserViewMutation } from '../redux/service/UserViewService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SpinnerIndicator from '../components/Common/SpinnerIndicator';
 
 const { width, height } = Dimensions.get('window');
 
 const ProfileScreen = ({ navigation }: any) => {
+  const [userViewAPIReq] = useUserViewMutation();
+  const [userData, setUserData] = useState<any>(null);
+  const [userName, setUserName] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const initializeProfile = async () => {
+      try {
+        setLoading(true);
+        const storedUserDetails: any = await AsyncStorage.getItem('userDetails');
+        if (storedUserDetails) {
+          const parsedDetails = JSON.parse(storedUserDetails);
+          const username = parsedDetails?.UserName;
+          setUserName(username);
+
+          if (username) {
+            const response: any = await userViewAPIReq({ Username: username });
+            if (response?.data?.SuccessFlag === 'true' && response?.data?.Message?.length > 0) {
+              setUserData(response.data.Message[0]);
+            } else {
+              console.log('Failed to fetch user data');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeProfile();
+  }, []);
+
   const infoItems = [
     { icon: IMAGES.Lock, text: '**********' },
-    { icon: IMAGES.Envelope, text: 'sridarth@gmail.com' },
-    { icon: IMAGES.Calender, text: '21st Nov 2002' },
-    { icon: IMAGES.Phone, text: '+91 87654 23782' },
-    { icon: IMAGES.Settings, text: 'Settings', isButton: true, screen: 'Settings' }, // Added screen key for navigation
+    { icon: IMAGES.Envelope, text: userData?.User_Email_Id || '-' },
+    { icon: IMAGES.Calender, text: userData?.User_DOB || '-' },
+    { icon: IMAGES.Phone, text: userData?.User_Mobile_No || '-' },
+    { icon: IMAGES.Settings, text: 'Settings', isButton: true, screen: 'Settings' },
   ];
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <SpinnerIndicator />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -39,7 +84,14 @@ const ProfileScreen = ({ navigation }: any) => {
             end={{ x: 1, y: 1 }}
             style={styles.gradientBorder}
           >
-            <Image source={IMAGES.ProfileImage} style={styles.profileImage} />
+            <Image
+              source={
+                userData?.User_Image_URL
+                  ? { uri: userData.User_Image_URL }
+                  : IMAGES.ProfileImage
+              }
+              style={styles.profileImage}
+            />
           </LinearGradient>
           <TouchableOpacity
             style={styles.editIconContainer}
@@ -50,7 +102,9 @@ const ProfileScreen = ({ navigation }: any) => {
             <Image source={IMAGES.Pen} style={styles.editIcon} />
           </TouchableOpacity>
         </View>
-        <Text style={styles.name}>Sridharth D</Text>
+        <Text style={styles.name}>
+          {userData?.Name || 'No Name'}
+        </Text>
       </View>
 
       <View style={styles.infoContainer}>
@@ -78,6 +132,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: width * 0.05,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -116,7 +176,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   editIconContainer: {
     position: 'absolute',

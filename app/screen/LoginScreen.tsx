@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,44 +14,48 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {IMAGES} from '../utils/SharedImages';
-import {FONT_FAMILY, VALIDATE_MSG} from '../utils/Constants';
+import { useNavigation } from '@react-navigation/native';
+import { IMAGES } from '../utils/SharedImages';
+import { FONT_FAMILY, VALIDATE_MSG } from '../utils/Constants';
 import InputField from '../components/Common/InputField';
 import GradientButton from '../components/Common/GradientButton';
 import LogoHeader from '../components/Common/LogoHeader';
 import MaskBackground from '../components/Common/MaskBackground';
 import Footer from '../components/Common/Footer';
-import {useLoginMutation} from '../redux/service/LoginService';
+import { useLoginMutation } from '../redux/service/LoginService';
 import SpinnerIndicator from '../components/Common/SpinnerIndicator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAppSettings } from '../context/AppSettingContext';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const LoginScreen = () => {
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
-  const [loginAPIReq, {isLoading}] = useLoginMutation();
+  const [loginAPIReq, { isLoading }] = useLoginMutation();
   const navigation = useNavigation();
-
   const languages = ['English (US)', 'Hindi', 'Tamil', 'Spanish'];
+
+
 
   const handleLogin = async () => {
     if (!mobile || !password) {
-      Alert.alert('Validation Error', 'Please enter both mobile and password.');
+      Alert.alert('Validation Error', VALIDATE_MSG.LOGIN_VALIDATION);
       return;
     }
-  
+
     try {
       const response = await loginAPIReq({
         Username: mobile,
         Password: password,
       }).unwrap();
-  
+
       if (response?.SuccessFlag === 'true') {
         Alert.alert('Success', 'Login Successful!');
         navigation.navigate('Bottom');
+        await AsyncStorage.setItem("userDetails", JSON.stringify(response?.Message[0]));
       } else {
         const errorMsg =
           response?.Message?.[0]?.Message || response?.Code_Desc || VALIDATE_MSG.INPUT_VALIDATION_ERROR;
@@ -64,7 +68,7 @@ const LoginScreen = () => {
       Alert.alert('Error', serverMessage);
     }
   };
-  
+
 
   return (
     <KeyboardAvoidingView
@@ -99,7 +103,7 @@ const LoginScreen = () => {
                   <FlatList
                     data={languages}
                     keyExtractor={item => item}
-                    renderItem={({item}) => (
+                    renderItem={({ item }) => (
                       <TouchableOpacity
                         onPress={() => {
                           setLanguageModalVisible(false);
@@ -131,7 +135,7 @@ const LoginScreen = () => {
                 showPassword={showPassword}
                 setShowPassword={setShowPassword}
               />
-              <View style={{alignItems: 'flex-end'}}>
+              <View style={{ alignItems: 'flex-end' }}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate('ForgotPassword')}>
                   <Text style={styles.forgotPassword}>Forgot password?</Text>
@@ -143,7 +147,7 @@ const LoginScreen = () => {
                 disabled={isLoading}
               />
               {isLoading && (
-             <SpinnerIndicator/>
+                <SpinnerIndicator />
               )}
               <TouchableOpacity
                 onPress={() =>
@@ -172,11 +176,11 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  flex: {flex: 1, backgroundColor: '#fff'},
-  scrollViewContent: {flex: 1},
-  container: {flex: 1, alignItems: 'center'},
-  content: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  welcomeContainer: {alignItems: 'center', marginTop: height * 0.02},
+  flex: { flex: 1, backgroundColor: '#fff' },
+  scrollViewContent: { flex: 1 },
+  container: { flex: 1, alignItems: 'center' },
+  content: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  welcomeContainer: { alignItems: 'center', marginTop: height * 0.02 },
   welcomeText: {
     fontSize: width * 0.06,
     fontWeight: '600',
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
     color: '#7E8299',
     marginTop: height * 0.01,
     fontWeight: '500',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
   },
   languageSelector: {
     flexDirection: 'row',
@@ -203,11 +207,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: width * 0.025,
   },
   languageText: {
-    fontSize: width * 0.035,
+    fontSize: 14,
     flex: 1,
     fontWeight: '600',
     color: '#3F4254',
-    fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
+    fontFamily: FONT_FAMILY.fontFamilyAnekLatinSemiBold,
   },
   chevronIcon: {
     width: width * 0.025,
