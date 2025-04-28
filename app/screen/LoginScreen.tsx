@@ -73,7 +73,8 @@ const LoginScreen = () => {
   return (
     <KeyboardAvoidingView
       style={styles.flex}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           <MaskBackground position="left" flip />
@@ -266,3 +267,98 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
+
+
+
+
+
+
+
+// import React from 'react';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import { Image, Text } from 'react-native';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../redux/Store';
+// import { FONT_FAMILY, FONT_SIZE } from '../utils/Constants';
+// import HomeScreen from '../screen/HomeScreen';
+// import BookingScreen from '../screen/BookingScreen';
+// import TrendScreen from '../screen/TrendScreen';
+// import SettingsScreen from '../screen/SettingsScreen';
+// import { RouteProp, ParamListBase } from '@react-navigation/native';
+
+// const Bottom = createBottomTabNavigator();
+
+// const fallbackMenuItems = [
+//   { code: 'BK', label: 'Home', component: HomeScreen },
+//   { code: 'LT', label: 'Booking', component: BookingScreen },
+//   { code: 'TT', label: 'Trend', component: TrendScreen },
+//   { code: 'ST', label: 'Settings', component: SettingsScreen },
+// ];
+
+// const componentMap: Record<string, React.ComponentType<any>> = {
+//   BK: HomeScreen,
+//   LT: BookingScreen,
+//   TT: TrendScreen,
+//   ST: SettingsScreen,
+// };
+
+// const BottomNavigation = () => {
+//   const appSettings = useSelector((state: RootState) => state.appsettings.appSettings);
+
+//   const menuItems = appSettings?.[0]?.Menu_Items?.length
+//     ? appSettings[0].Menu_Items.map((item: { Main_Menu_Code: string | number; Menu_Desc: any; Tab_Icon_url: any; Selected_Tab_Icon_Url: any; }) => ({
+//         code: item.Main_Menu_Code,
+//         label: item.Menu_Desc,
+//         icon: item.Tab_Icon_url,
+//         selectedIcon: item.Selected_Tab_Icon_Url,
+//         component: componentMap[item.Main_Menu_Code],
+//       }))
+//     : fallbackMenuItems;
+
+//   if (!menuItems.length) return null;
+
+//   return (
+//     <Bottom.Navigator
+//       initialRouteName={menuItems[0].label}
+//       screenOptions={{
+//         headerShown: false,
+//         tabBarStyle: { borderTopWidth: 0.3, borderTopColor: '#778899' },
+//         tabBarLabelStyle: {
+//           fontSize: FONT_SIZE.S,
+//           fontFamily: FONT_FAMILY.fontFamilyAnekLatinMedium,
+//         },
+//       }}
+//     >
+//       {menuItems.map((item: { component: React.ComponentType<{}> | React.ComponentType<{ route: RouteProp<ParamListBase, any>; navigation: any; }>; label: unknown; selectedIcon: any; icon: any; }, index: React.Key | null | undefined) => {
+//         if (!item.component) return null;
+//         return (
+//           <Bottom.Screen
+//             key={index}
+//             name={item.label}
+//             component={item.component}
+//             options={{
+//               tabBarIcon: ({ focused }) => (
+//                 <Image
+//                   source={{ uri: focused ? item.selectedIcon || '' : item.icon || '' }}
+//                   style={{ width: 20, height: 20, resizeMode: 'contain' }}
+//                   onError={e => console.log('Image load error:', e.nativeEvent.error)}
+//                 />
+//               ),
+//               tabBarLabel: ({ color }) => (
+//                 <Text style={{
+//                   color: 'black',
+//                   fontSize: FONT_SIZE.S,
+//                   fontFamily: FONT_FAMILY.fontFamilyAnekLatinRegular,
+//                 }}>
+//                   {item.label}
+//                 </Text>
+//               ),
+//             }}
+//           />
+//         );
+//       })}
+//     </Bottom.Navigator>
+//   );
+// };
+
+// export default BottomNavigation;

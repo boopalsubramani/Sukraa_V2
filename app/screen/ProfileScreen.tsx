@@ -51,13 +51,26 @@ const ProfileScreen = ({ navigation }: any) => {
     initializeProfile();
   }, []);
 
+  // const infoItems = [
+  //   { icon: IMAGES.Lock, text: '**********'},
+  //   { icon: IMAGES.Envelope, text: userData?.User_Email_Id || '-' },
+  //   { icon: IMAGES.Calender, text: userData?.User_DOB || '-' },
+  //   { icon: IMAGES.Phone, text: userData?.User_Mobile_No || '-' },
+  //   { icon: IMAGES.Settings, text: 'Settings', isButton: true, screen: 'Settings' },
+  // ];
   const infoItems = [
     { icon: IMAGES.Lock, text: '**********' },
     { icon: IMAGES.Envelope, text: userData?.User_Email_Id || '-' },
     { icon: IMAGES.Calender, text: userData?.User_DOB || '-' },
     { icon: IMAGES.Phone, text: userData?.User_Mobile_No || '-' },
-    { icon: IMAGES.Settings, text: 'Settings', isButton: true, screen: 'Settings' },
+    { 
+      icon: IMAGES.Settings, 
+      text: 'Settings', 
+      isButton: true, 
+      screen: 'Settings'  // keep this
+    },
   ];
+  
 
   if (loading) {
     return (
@@ -110,7 +123,7 @@ const ProfileScreen = ({ navigation }: any) => {
       <View style={styles.infoContainer}>
         {infoItems.map((item, index) => (
           <React.Fragment key={index}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               disabled={!item.isButton}
               onPress={() => item.screen && navigation.navigate(item.screen)}
             >
@@ -118,7 +131,22 @@ const ProfileScreen = ({ navigation }: any) => {
                 <Image source={item.icon} style={styles.icon} />
                 <Text style={styles.infoText}>{item.text}</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
+<TouchableOpacity
+  disabled={!item.isButton}
+  onPress={() => {
+    if (item.isButton && item.screen) {
+      navigation.navigate('BottomTabs', { screen: 'Profile', params: { openSettings: true } });
+    }
+  }}
+>
+  <View style={styles.infoRow}>
+    <Image source={item.icon} style={styles.icon} />
+    <Text style={styles.infoText}>{item.text}</Text>
+  </View>
+</TouchableOpacity>
+
             <View style={styles.separator} />
           </React.Fragment>
         ))}

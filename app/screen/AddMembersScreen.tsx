@@ -364,6 +364,8 @@ const AddMemberScreen = ({ navigation }: any) => {
     const [titles, setTitles] = useState<string[]>([]);
     const proofs = ['ID Card', 'Passport', 'Driving License'];
     const [relations, setRelations] = useState<string[]>([]);
+    const [genders, setGenders] = useState<string[]>([]);
+
 
     const [getGenderAPIReq] = useGetGenderMutation();
     const [getTitleAPIReq] = useGetTitleMutation();

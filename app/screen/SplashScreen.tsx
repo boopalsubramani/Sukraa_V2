@@ -5,6 +5,7 @@ import {
   View,
   Image,
   Dimensions,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAppSettings} from '../context/AppSettingContext';
@@ -34,6 +35,8 @@ const SplashScreen = () => {
     fetchConfig();
   }, []);
 
+
+  
   useEffect(() => {
     if (!loading) {
       const timer = setTimeout(() => {

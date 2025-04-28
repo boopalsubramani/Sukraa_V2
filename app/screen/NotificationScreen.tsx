@@ -15,6 +15,7 @@ import { FONT_FAMILY } from '../utils/Constants';
 import { useNotificationListMutation } from '../redux/service/NotificationListService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNotificationUpdateMutation } from '../redux/service/NotificationUpdateService';
+import SpinnerIndicator from '../components/Common/SpinnerIndicator';
 
 const { width, height } = Dimensions.get('window');
 
@@ -155,7 +156,7 @@ const NotificationScreen = ({ navigation }: any) => {
 
             {/* Loader or Empty or List */}
             {isLoading ? (
-                <ActivityIndicator size="large" color="#1E3989" style={{ marginTop: 20 }} />
+                <SpinnerIndicator/>
             ) : filteredNotifications.length === 0 ? (
                 <Text style={styles.emptyText}>No notifications found.</Text>
             ) : (
